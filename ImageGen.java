@@ -105,11 +105,11 @@ public class ImageGen {
     	g2d.dispose();
     	 
     	// Save as PNG
-    	File imageFile = new File("LevelImage.png");
+    	File imageFile = new File("LevelPNGImage.png");
     	ImageIO.write(bufferedImage, "png", imageFile);
     	 
     	// Save as JPEG
-    	imageFile = new File("LevelImage.jpg");
+    	imageFile = new File("LevelJPGImage.jpg");
     	ImageIO.write(bufferedImage, "jpg", imageFile);
     	
     }
