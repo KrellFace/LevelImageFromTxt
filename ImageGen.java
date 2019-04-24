@@ -1,22 +1,41 @@
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.*; 
- 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.imageio.ImageIO;
  
 /* Generates png and jpeg representations of a mario level from its associated .txt file */
-
-
 public class ImageGen {
  
     public static void main(String[] args) throws IOException {
  
-    	//Text representation of level to generate images from
-    	File file = new File("C:\\Users\\Ollie\\Downloads\\MarioLevelComp2011\\MarioLevelComp2011\\Data\\mario\\levels\\mario-1-2.txt");   	  
+    	//Default directory to select levels from set here:
+    	String defaultDir = "C:\\Users\\Ollie\\Documents\\MSc Studying\\Project\\Eclipse Projects\\MarioLevelComp2011\\Data\\mario\\levels";
+    	
+    	//Default directory to create level representations set here:
+    	String defaultOutputDir = "C:\\Users\\Ollie\\Desktop\\";
+    	
+    	//Instantiate storage for the level file to generate an image of
+    	File file = null;
+    	String fileName = null;
+    	
+    	//Logic for running a basic file selector
+        JFileChooser fileChooser = new JFileChooser(defaultDir);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        		"TEXT FILES", "txt", "text");
+        fileChooser.setFileFilter(filter);
+        int returnVal = fileChooser.showOpenDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            //Store selected file
+            file = fileChooser.getSelectedFile();
+            //Store selected file name for output naming
+            fileName = fileChooser.getSelectedFile().getName();
+        }
+    	
     	BufferedReader br = new BufferedReader(new FileReader(file)); 
     	  
     	String st; 
@@ -72,7 +91,7 @@ public class ImageGen {
     	for (int i = 0; i < height; i++) {
     		st = br.readLine();
         	for (int j = 0; j < st.length(); j++) {
-        		
+        		      		        	   		
         		if ((st.charAt(j) == blockChar)||(st.charAt(j) == qBlockChar)||(st.charAt(j) == smashBlockChar)) {
         			//Paint all solid blocks brown
         			g2d.setColor(new Color(112, 71, 25));
@@ -95,23 +114,23 @@ public class ImageGen {
         			
         			g2d.setColor(new Color(6, 114, 0));
             		g2d.fillRect((j* blockSize), (i * blockSize), blockSize, blockSize);
-        		}
-        		
-        		       		
+        		}       		       		       		
         	}
     	} 
     	  
     	// Release used system resources 
     	g2d.dispose();
+    	
+    	//Remove file extension from file name
+    	fileName = fileName.replace(".txt", "");
     	 
     	// Save as PNG
-    	File imageFile = new File("LevelPNGImage.png");
+    	File imageFile = new File(defaultOutputDir+fileName+"PNG.png");
     	ImageIO.write(bufferedImage, "png", imageFile);
     	 
     	// Save as JPEG
-    	imageFile = new File("LevelJPGImage.jpg");
+    	imageFile = new File(defaultOutputDir+fileName+"JPG.jpg");
     	ImageIO.write(bufferedImage, "jpg", imageFile);
     	
-    }
+    }   
 }
- 
